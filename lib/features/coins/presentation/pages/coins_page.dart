@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:glade_test/features/coins/presentation/notifier/coin_notifier.dart';
 import 'package:glade_test/features/coins/presentation/widgets/coin_card_widget.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 class CoinsPage extends StatefulWidget {
