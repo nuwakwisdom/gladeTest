@@ -22,60 +22,68 @@ class _CoinsPageState extends State<CoinsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<CryptoList>(builder: (context, _, snapshot) {
-      return Scaffold(
-        backgroundColor: const Color(
-          0xFF1F2D2D,
-        ),
-        appBar: AppBar(
-          backgroundColor: const Color(
-            0xFF1F2D2D,
-          ),
-          elevation: 0,
-          title: Text(
-            'Glade Test',
-            style: GoogleFonts.lato(
-              fontWeight: FontWeight.bold,
+    final dataProvider = Provider.of<CryptoList>(context);
+    return dataProvider.isLoading
+        ? const Center(
+            child: CircularProgressIndicator(
+              color: Colors.grey,
             ),
-          ),
-          centerTitle: true,
-        ),
-        body: Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: 20,
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const Gap(30),
-              Text(
-                'My Coins',
-                style: GoogleFonts.lato(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  color: Colors.white,
+          )
+        : RefreshIndicator(
+            child: Scaffold(
+              backgroundColor: const Color(
+                0xFF1F2D2D,
+              ),
+              appBar: AppBar(
+                backgroundColor: const Color(
+                  0xFF1F2D2D,
+                ),
+                elevation: 0,
+                title: Text(
+                  'Glade Test',
+                  style: GoogleFonts.lato(
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                centerTitle: true,
+              ),
+              body: Padding(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 20,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Gap(30),
+                    Text(
+                      'My Coins',
+                      style: GoogleFonts.lato(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.white,
+                      ),
+                    ),
+                    const Gap(20),
+                    Expanded(
+                        child: ListView.builder(
+                            itemCount: dataProvider.coinList.length,
+                            itemBuilder: (context, index) {
+                              final data = dataProvider.coinList[index];
+                              bool colorsChange =
+                                  data.dayChange.toString()[0] == '-';
+
+                              return CoinCard(
+                                coinImage: data.image,
+                                coinName: data.symbol,
+                                postionChange: data.dayChange.toString(),
+                                amount: '${data.currentPrice * 740}',
+                                changedPosition: colorsChange,
+                              );
+                            }))
+                  ],
                 ),
               ),
-              const Gap(20),
-              Expanded(
-                  child: ListView.builder(
-                      itemCount: _.coinList.length,
-                      itemBuilder: (context, index) {
-                        final data = _.coinList[index];
-                        bool colorsChange = data.dayChange.toString()[0] == '-';
-
-                        return CoinCard(
-                          coinImage: data.image,
-                          coinName: data.symbol,
-                          postionChange: data.dayChange.toString(),
-                          amount: '${data.currentPrice * 740}',
-                          changedPosition: colorsChange,
-                        );
-                      }))
-            ],
-          ),
-        ),
-      );
-    });
+            ),
+            onRefresh: () => dataProvider.getCoins());
   }
 }

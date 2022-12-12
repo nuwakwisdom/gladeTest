@@ -20,10 +20,9 @@ class ConvertModal extends StatefulWidget {
 
 class _ConvertModalState extends State<ConvertModal> {
   double? newAmount = 0;
-
+  TextEditingController amountController = TextEditingController();
   @override
   Widget build(BuildContext context) {
-    TextEditingController amountController = TextEditingController();
     var formatter = NumberFormat('###,000');
     String? currency(context) {
       var format =
@@ -38,7 +37,7 @@ class _ConvertModalState extends State<ConvertModal> {
     return Padding(
       padding:
           EdgeInsets.only(bottom: MediaQuery.of(context).viewInsets.bottom),
-      child: Container(
+      child: SizedBox(
         height: 300,
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
